@@ -1,12 +1,13 @@
 const getDb = require("../util/database").getDb;
 const mongodb = require("mongodb");
 class Product {
-  constructor(title, price, imageUrl, description, id) {
+  constructor(title, price, imageUrl, description, id, userId) {
     this.title = title;
     this.price = price;
     this.imageUrl = imageUrl;
     this.description = description;
-    this._id = id;
+    this._id = id ? new mongodb.ObjectId(id) : null;
+    this.userId = userId;
   }
 
   async save() {
@@ -15,7 +16,7 @@ class Product {
       //updating product if id is already set
       const result = await db
         .collection("products")
-        .updateOne({ _id: new mongodb.ObjectId(this._id) }, { $set :this});
+        .updateOne({ _id: new mongodb.ObjectId(this._id) }, { $set: this });
       console.log(result);
       return result;
     } else {
@@ -40,8 +41,6 @@ class Product {
       .next();
     return product;
   }
-
-
 }
 
 module.exports = Product;
