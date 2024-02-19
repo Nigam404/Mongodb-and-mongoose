@@ -19,6 +19,7 @@ exports.postAddProduct = async (req, res, next) => {
   const product = new Product(title, price, imageUrl, description);
   const result = await product.save();
   console.log("Product created successfully");
+  res.redirect("/admin/products");
 };
 
 exports.getEditProduct = (req, res, next) => {
